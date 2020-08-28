@@ -5,13 +5,14 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.Base64;
 
 public class Utils {
     public static String encrypt (String dataBase64, String keyBase64) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, ShortBufferException, BadPaddingException, IllegalBlockSizeException {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 
-        byte[] keyBytes = keyBase64.getBytes();
+        byte[] keyBytes = Arrays.copyOf(keyBase64.getBytes(), 16);
         SecretKey secretKey = new SecretKeySpec(keyBytes, "AES");
 
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
@@ -44,7 +45,7 @@ public class Utils {
     public static String decrypt (String dataBase64, String keyBase64) throws ShortBufferException, BadPaddingException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 
-        byte[] keyBytes = keyBase64.getBytes();
+        byte[] keyBytes = Arrays.copyOf(keyBase64.getBytes(), 16);
         SecretKey secretKey = new SecretKeySpec(keyBytes, "AES");
 
         cipher.init(Cipher.DECRYPT_MODE, secretKey);

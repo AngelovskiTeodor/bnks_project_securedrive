@@ -37,6 +37,12 @@ public class UploadedFileController {
     }
 
     @GetMapping
+    @RequestMapping("/uploadFile")
+    public String showUploadPage(Model model){
+        return "addfile";
+    }
+
+    @GetMapping
     @RequestMapping("/{id}")
     public String getFile (@PathVariable Long id, Model model) throws Exception {
         UploadedFile file = uploadedFileService.findById(id).orElseThrow(() -> new Exception("File does not exist: "+id));
@@ -57,6 +63,6 @@ public class UploadedFileController {
         encodedFile = Utils.encrypt(encodedFile, Base64.getEncoder().encodeToString(currentUser.getPassword().getBytes()));
         uploadedFile.setEncodedFile(encodedFile);
         uploadedFileService.saveUploadedFile(uploadedFile);
-        return "list";
+        return "redirect:/files";
     }
 }
