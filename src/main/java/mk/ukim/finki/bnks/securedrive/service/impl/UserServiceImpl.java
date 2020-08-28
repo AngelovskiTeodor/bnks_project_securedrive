@@ -20,4 +20,13 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new Exception("User not found: "+userId));
     }
 
+    @Override
+    public User registerUser(User user) throws Exception {
+        if (this.userRepository.existsById(user.getUsername())) {
+            throw new Exception("User " + user.getUsername() + "already exists!");
+        }
+        return this.userRepository.save(user);
+    }
+
+
 }
